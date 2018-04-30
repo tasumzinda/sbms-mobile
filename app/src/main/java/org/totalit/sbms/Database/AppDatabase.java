@@ -12,7 +12,7 @@ import org.totalit.sbms.domain.Client;
 import org.totalit.sbms.domain.ProcumentDocs;
 import org.totalit.sbms.domain.User;
 
-@Database(entities = {User.class, Client.class, ProcumentDocs.class}, version = 1)
+@Database(entities = {User.class, Client.class, ProcumentDocs.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
 

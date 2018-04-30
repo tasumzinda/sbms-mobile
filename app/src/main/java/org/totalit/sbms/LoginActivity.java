@@ -2,6 +2,7 @@ package org.totalit.sbms;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +35,7 @@ import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
     private AppDatabase mdb;
-
+    private TextInputLayout inputLayoutUsername, inputLayoutPwd;
     private TextView userName;
     private TextView password;
     private Button loginBtn;
@@ -44,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mdb = AppDatabase.getFileDatabase(getApplicationContext());
+        inputLayoutUsername = findViewById(R.id.input_layout_username);
+        inputLayoutPwd = findViewById(R.id.input_layout_pwd);
         userName = findViewById(R.id.userName);
         password = findViewById(R.id.password);
         loginBtn = findViewById(R.id.loginBtn);
@@ -126,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         GetJSON getJSON = new GetJSON();
+
         getJSON.execute();
     }
     private void saveUsers(String jsonUsers) throws JSONException {

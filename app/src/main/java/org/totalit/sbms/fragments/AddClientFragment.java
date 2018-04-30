@@ -2,6 +2,7 @@ package org.totalit.sbms.fragments;
 
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,9 +23,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.totalit.sbms.ClassImplements.SpinnerOnItemSelectedListener;
+import org.totalit.sbms.Database.AbstractDb;
+import org.totalit.sbms.Database.AppDatabase;
+import org.totalit.sbms.Database.InstantiateDb;
 import org.totalit.sbms.R;
+import org.totalit.sbms.Utils.DateUtil;
 import org.totalit.sbms.Utils.Validations;
 import org.totalit.sbms.domain.Client;
+
+import java.util.Date;
 
 public class AddClientFragment extends Fragment {
 
@@ -37,11 +44,13 @@ public class AddClientFragment extends Fragment {
     RadioButton radioCom, radioInd;
 
 
+    AbstractDb mdb;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_addclients,container, false);
+              mdb = InstantiateDb.sbmsDb(getActivity().getApplicationContext());
 
             inputLayoutName = (TextInputLayout) view.findViewById(R.id.input_layout_name);
             inputLayoutEmail = (TextInputLayout) view.findViewById(R.id.input_layout_email);
@@ -97,14 +106,29 @@ public class AddClientFragment extends Fragment {
         }
 
        else {
-            Client client = new Client();
+            Date dateNow = new Date();
+            final Client client = new Client();
             client.setName(inputName.getText().toString());
             client.setClientType(companyOrIndividual);
             client.setAddress(inputAddress.getText().toString());
             client.setBranch(branchSpinner.getSelectedItem().toString());
             client.setDescription(inputDescription.getText().toString());
             client.setEmail(inputEmail.getText().toString());
-            Fragment fragment = null;
+            client.setDescription(inputDescription.getText().toString());
+            client.setWebsite(inputWebsite.getText().toString());
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    mdb.clientRepository().insertUser(client);
+
+                }
+            });
+
+
+
+
+
+         Fragment fragment = null;
             Bundle bundle = new Bundle();
             if (branchSpinner.getSelectedItem().equals("Yes")) {
                 fragment = new BranchFragment();
